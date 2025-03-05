@@ -6,9 +6,27 @@ let theThumbnails = document.querySelectorAll('#buttonHolder img'),
     resetPieces = document.querySelector('.reset-pieces');
 
 // functions
-function changeImageSet() { //Bug 2 in this funtcion
-    gameBoard.style.backgroundImage = `url(images/backGround${this.dataset.bgref}.jpg)`
+function changeImageSet() { // Bug 2 Fix
+    let bgNumber = this.dataset.bgref; // Get the number from the clicked thumbnail
+    gameBoard.style.backgroundImage = `url(images/backGround${bgNumber}.jpg)`; // Change background
+
+
+    // Move any dropped pieces back to the puzzle-pieces container
+    dropZones.forEach(zone => {
+        while (zone.firstChild) {
+            document.querySelector('.puzzle-pieces').appendChild(zone.firstChild);
+        }
+    });
+
+
+    // Update the puzzle pieces to match the new puzzle set
+    let pieceIds = ["topLeft", "topRight", "bottomLeft", "bottomRight"];
+    pieceIds.forEach(id => {
+        document.querySelector(`#${id}`).src = `images/${id}${bgNumber}.jpg`;
+    });
 }
+
+
 
 function allowDrag(event) {
     console.log('started dragging an image');
