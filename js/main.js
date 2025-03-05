@@ -10,6 +10,13 @@ function changeImageSet() { // Bug 2 Fix
     let bgNumber = this.dataset.bgref; // Get the number from the clicked thumbnail
     gameBoard.style.backgroundImage = `url(images/backGround${bgNumber}.jpg)`; // Change background
 
+    // Move any dropped pieces back to the puzzle-pieces container
+    dropZones.forEach(zone => {
+        while (zone.firstChild) {
+            document.querySelector('.puzzle-pieces').appendChild(zone.firstChild);
+        }
+    });
+
     // Update the puzzle pieces to match the new puzzle set
     let pieceIds = ["topLeft", "topRight", "bottomLeft", "bottomRight"];
     pieceIds.forEach(id => {
@@ -39,6 +46,10 @@ function allowDrop(event) { //Bug 1 in this function
 
     // get the ACTUAL dragged element, using the ID
     let droppedEl = document.querySelector(`#${droppedElId}`);
+
+    if (this.children.length > 0) {
+        return; // Prevents multiple pieces from stacking in one zone
+    }
 
     // append the dragged element to the drop zone
     this.appendChild(droppedEl);
